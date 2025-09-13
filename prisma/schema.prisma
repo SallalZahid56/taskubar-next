@@ -31,17 +31,17 @@ model User {
 
 model ServiceRequest {
   id          String   @id @default(uuid())
-  task        String   // Assignment, Project, etc.
-  service     String   // Writing, Cybersecurity, Programming, etc.
-  topic       String   // Sub-service topic
-  description String   // Instructions
-  timeline    String   // 3 days, 5 days, etc.
-  fileUrl     String?  // Store uploaded file URL or path
-  status      String   @default("Pending") // Track request (Pending → In Progress → Delivered)
+  task        String
+  service     String
+  topic       String
+  description String
+  timeline    String
+  fileUrl     String?
+  status      String   @default("Pending")
 
-  // ✅ Relation with User
-  userId   String
-  user     User      @relation(fields: [userId], references: [id])
+  // ✅ Relation with User (nullable, safe on delete)
+  userId   String?
+  user     User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

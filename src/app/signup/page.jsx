@@ -39,7 +39,7 @@ const Signup = () => {
         console.log("✅ Google signup success:", data);
         setSuccess("Google signup successful! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/user-dashboard");
         }, 1500);
       } catch (err) {
         console.error("Google signup error:", err);

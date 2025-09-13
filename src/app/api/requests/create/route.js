@@ -46,15 +46,20 @@ export async function POST(req) {
         topic,
         description,
         timeline,
-        fileUrl: filePath, // store file path (for download later)
+        fileUrl: filePath,
         userId: decoded.id,
       },
     });
 
-    // ✅ Save notification in DB
+    // ✅ Fetch user name
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+    });
+
+    // ✅ Save notification in DB with clear name
     await prisma.notification.create({
       data: {
-        message: `📩 New request submitted by ${decoded.id}`, // you can use decoded.name if included in JWT
+        message: `📩 New request submitted by ${user.name}`,
         userId: decoded.id,
       },
     });
