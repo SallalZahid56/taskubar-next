@@ -1,0 +1,68 @@
+// -------------------------------
+// Generator & Datasource
+// -------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------------------
+// Models
+// -------------------------------
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ✅ Relationships
+  requests       ServiceRequest[]
+  notifications  Notification[]
+}
+
+model ServiceRequest {
+  id          String   @id @default(uuid())
+  task        String   // Assignment, Project, etc.
+  service     String   // Writing, Cybersecurity, Programming, etc.
+  topic       String   // Sub-service topic
+  description String   // Instructions
+  timeline    String   // 3 days, 5 days, etc.
+  fileUrl     String?  // Store uploaded file URL or path
+  status      String   @default("Pending") // Track request (Pending → In Progress → Delivered)
+
+  // ✅ Relation with User
+  userId   String
+  user     User      @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // ✅ Optional: link to user who triggered the notification
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+// -------------------------------
+// Enums
+// -------------------------------
+
+enum Role {
+  USER
+  ADMIN
+}
