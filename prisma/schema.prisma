@@ -39,13 +39,17 @@ model ServiceRequest {
   fileUrl     String?
   status      String   @default("Pending")
 
-  // ✅ Relation with User (nullable, safe on delete)
+  quotation   String?   // Admin’s quotation text
+  voucher     String?   // User’s applied voucher code
+  invoiceSent Boolean   @default(false)
+
   userId   String?
   user     User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 model Notification {
   id        String   @id @default(uuid())

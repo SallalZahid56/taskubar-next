@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import LeftImage from "@/components/LeftImage";
 import RequestForm from "@/components/RequestForm";
+import UserOrdersSection from "@/components/UserOrdersSection"; // 👈 add this
+
 
 export default function UserDashboard() {
   const [user, setUser] = useState(null);
@@ -83,7 +85,7 @@ export default function UserDashboard() {
   };
 
   return (
-     <div className="min-h-screen bg-white px-4 flex flex-col">
+    <div className="min-h-screen bg-white px-4 flex flex-col">
       {/* ✅ Navbar on top */}
       <TopBar user={user} onLogout={handleLogout} />
 
@@ -111,6 +113,9 @@ export default function UserDashboard() {
               taskOptions={taskOptions}
               timelineOptions={timelineOptions}
             />
+
+            {/* ✅ User Orders Section (now inside right panel) */}
+            <UserOrdersSection />
           </div>
         </div>
       </div>
