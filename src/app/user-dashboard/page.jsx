@@ -96,7 +96,8 @@ export default function UserDashboard() {
 
         {/* Right Section */}
         <div className="w-full md:w-1/2 flex flex-col">
-          <div className="p-6 sm:p-8 flex flex-col justify-center overflow-y-auto max-h-[90vh]">
+          <div className="p-6 sm:p-8 flex flex-col gap-6 overflow-y-auto max-h-[90vh]">
+            {/* Welcome Section */}
             <div className="mb-4 text-center md:text-left mt-8">
               <h1 className="text-2xl font-bold">
                 Welcome, <span className="text-purple-600">{user.name}</span> 👋
@@ -108,14 +109,18 @@ export default function UserDashboard() {
             </div>
 
             {/* Request Form */}
-            <RequestForm
-              services={services}
-              taskOptions={taskOptions}
-              timelineOptions={timelineOptions}
-            />
+            <div className="bg-gray-50 p-4 rounded-lg shadow">
+              <RequestForm
+                services={services}
+                taskOptions={taskOptions}
+                timelineOptions={timelineOptions}
+              />
+            </div>
 
-            {/* ✅ User Orders Section (now inside right panel) */}
-            <UserOrdersSection />
+            {/* ✅ User Orders Section (separate block) */}
+            <div className="bg-gray-50 p-4 rounded-lg shadow">
+              <UserOrdersSection />
+            </div>
           </div>
         </div>
       </div>
