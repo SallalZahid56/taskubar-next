@@ -2,6 +2,8 @@
 // Generator & Datasource
 // -------------------------------
 
+// SallalZahid3026@@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,38 +18,66 @@ datasource db {
 // -------------------------------
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  role         Role     @default(USER)
+  referralCode String?  @unique // ✅ user’s unique referral code
+  referredById String? // ✅ who referred them
+  referredBy   User?    @relation("Referrals", fields: [referredById], references: [id])
+  referrals    User[]   @relation("Referrals")
+  wallet       Float    @default(0) // ✅ credits earned through referrals
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  // ✅ Relationships
-  requests       ServiceRequest[]
-  notifications  Notification[]
+  // Relations
+  requests      ServiceRequest[]
+  notifications Notification[]
+
+  // ✅ Add both sides of referral rewards
+  referrerRewards ReferralReward[] @relation("ReferrerRewards")
+  refereeRewards  ReferralReward[] @relation("RefereeRewards")
 }
 
 model ServiceRequest {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   task        String
   service     String
   topic       String
   description String
   timeline    String
   fileUrl     String?
-  status      String   @default("Pending")
+  status      String  @default("Pending")
 
-  quotation   String?   // Admin’s quotation text
-  voucher     String?   // User’s applied voucher code
-  invoiceSent Boolean   @default(false)
+  quotation   String?
+  voucherCode String? // ✅ actual voucher string user applied
+  discount    Float? // ✅ discount value applied
+  invoiceSent Boolean @default(false)
 
-  userId   String?
-  user     User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  // Relations
+  voucherId String?
+  voucher   Voucher? @relation(fields: [voucherId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Voucher {
+  id            String    @id @default(uuid())
+  name          String
+  code          String    @unique
+  discount      Float
+  type          String    @default("PERCENT") // "PERCENT" or "FLAT"
+  appliesTo     VoucherFor @default(REFEREE)  // 👈 new enum field (who gets it)
+  condition     String?   // e.g., "3-projects-same-category" or "5-projects-same-category"
+  expiresAt     DateTime?
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  serviceRequests ServiceRequest[]
 }
 
 
@@ -57,10 +87,31 @@ model Notification {
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  // ✅ Optional: link to user who triggered the notification
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 }
+
+model ReferralReward {
+  id         String   @id @default(uuid())
+  referrerId String
+  refereeId  String
+  amount     Float
+  status     String   @default("PENDING") // or REDEEMED
+  createdAt  DateTime @default(now())
+
+  // ✅ Relations
+  referrer User @relation("ReferrerRewards", fields: [referrerId], references: [id])
+  referee  User @relation("RefereeRewards", fields: [refereeId], references: [id])
+}
+
+model AppSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 
 // -------------------------------
 // Enums
@@ -69,4 +120,12 @@ model Notification {
 enum Role {
   USER
   ADMIN
+}
+
+
+enum VoucherFor {
+  REFERRER
+  REFEREE
+  MILESTONE3
+  MILESTONE5
 }

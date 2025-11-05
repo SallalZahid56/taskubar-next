@@ -12,6 +12,7 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -95,7 +96,7 @@ const Signup = () => {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, referralCode }),
       });
 
       const data = await res.json();
@@ -110,7 +111,7 @@ const Signup = () => {
       // Success 🎉
       setSuccess("Signup successful! Redirecting...");
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/user-dashboard");
       }, 1500);
     } catch (err) {
       console.error("Signup error:", err);
@@ -139,12 +140,16 @@ const Signup = () => {
           {/* Logo */}
           <div className="mb-4 text-center md:text-left">
             <h1 className="text-2xl font-bold flex justify-center md:justify-start items-center gap-2">
-              <span className="text-orange-500 text-3xl">g</span>
-              <span className="text-blue-500 text-3xl">i</span>
-              <span className="text-green-500 text-3xl">f</span>
-              <span className="text-pink-500 text-3xl">t</span>
+              <span className="text-orange-500 text-3xl">T</span>
+              <span className="text-blue-500 text-3xl">a</span>
+              <span className="text-green-500 text-3xl">s</span>
+              <span className="text-pink-500 text-3xl">k</span>
+              <span className="text-pink-500 text-3xl">u</span>
+              <span className="text-pink-500 text-3xl">b</span>
+              <span className="text-pink-500 text-3xl">e</span>
+              <span className="text-pink-500 text-3xl">r</span>
               <span className="text-gray-900 ml-2">
-                GIFT <span className="font-bold">CARD</span>
+                Task <span className="font-bold">uber</span>
               </span>
             </h1>
             <div className="mt-2 h-1 w-24 mx-auto md:mx-0 bg-gradient-to-r from-purple-400 to-purple-700"></div>
@@ -192,12 +197,21 @@ const Signup = () => {
               </button>
             </div>
 
+            {/* ✅ Optional referral code field */}
+            <input
+              value={referralCode}
+              onChange={(e) => setReferralCode(e.target.value)}
+              type="text"
+              placeholder="Referral Code (optional)"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
             <button
               disabled={busy}
               type="submit"
               className={`w-full py-2 rounded-lg font-semibold transition ${busy
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:opacity-90"
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:opacity-90"
                 }`}
             >
               {busy ? "Signing up..." : "Signup"}

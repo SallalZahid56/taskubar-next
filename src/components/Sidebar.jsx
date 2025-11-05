@@ -33,10 +33,10 @@ export default function Sidebar({ setActiveSection }) {
           Orders
         </button>
         <button
-          onClick={() => setActiveSection("giftcards")}
+          onClick={() => setActiveSection("vouchers")}
           className="block w-full text-left p-2 rounded hover:bg-purple-700"
         >
-          Gift Cards
+          Vouchers
         </button>
         <button
           onClick={() => setActiveSection("brands")}

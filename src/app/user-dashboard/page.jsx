@@ -6,6 +6,7 @@ import TopBar from "@/components/TopBar";
 import LeftImage from "@/components/LeftImage";
 import RequestForm from "@/components/RequestForm";
 import UserOrdersSection from "@/components/UserOrdersSection"; // 👈 add this
+import NotificationBanner from "@/components/NotificationBanner";
 
 
 export default function UserDashboard() {
@@ -120,6 +121,10 @@ export default function UserDashboard() {
             {/* ✅ User Orders Section (separate block) */}
             <div className="bg-gray-50 p-4 rounded-lg shadow">
               <UserOrdersSection />
+            </div>
+            {/* Notification Banner */}
+            <div className="mb-4">
+              <NotificationBanner />
             </div>
           </div>
         </div>

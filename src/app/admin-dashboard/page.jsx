@@ -17,6 +17,8 @@ import SalesStatistics from "@/components/SalesStatics";
 import UsersSection from "@/components/UserSection";
 import CategoriesSection from "@/components/CategoriesSection";
 import OrdersSection from "@/components/OrdersSection";
+import VouchersSection from "@/components/VoucherSection";
+
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -85,6 +87,7 @@ export default function AdminDashboard() {
           {activeSection === "users" && <UsersSection />}
           {activeSection === "categories" && <CategoriesSection />}
           {activeSection === "orders" && <OrdersSection />}
+          {activeSection === "vouchers" && <VouchersSection />}
         </main>
       </div>
     </div>
