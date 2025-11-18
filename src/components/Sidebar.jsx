@@ -14,12 +14,7 @@ export default function Sidebar({ setActiveSection }) {
         >
           Dashboard
         </button>
-        <button
-          onClick={() => setActiveSection("categories")}
-          className="block w-full text-left p-2 rounded hover:bg-purple-700"
-        >
-          Categories
-        </button>
+  
         <button
           onClick={() => setActiveSection("users")}
           className="block w-full text-left p-2 rounded hover:bg-purple-700"
@@ -37,18 +32,6 @@ export default function Sidebar({ setActiveSection }) {
           className="block w-full text-left p-2 rounded hover:bg-purple-700"
         >
           Vouchers
-        </button>
-        <button
-          onClick={() => setActiveSection("brands")}
-          className="block w-full text-left p-2 rounded hover:bg-purple-700"
-        >
-          Total Brands
-        </button>
-        <button
-          onClick={() => setActiveSection("policies")}
-          className="block w-full text-left p-2 rounded hover:bg-purple-700"
-        >
-          Policies
         </button>
       </nav>
     </aside>

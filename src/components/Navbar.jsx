@@ -28,10 +28,8 @@ const Navbar = () => {
 
           <ul className="hidden lg:flex gap-4 font-semibold text-black text-base">
             <li><a href="#howItWorks" className="hover:text-blue-500">How it Works</a></li>
-            <li><a href="#membershipBenefits" className="hover:text-blue-500">Benefits</a></li>
             <li><a href="#services" className="hover:text-blue-500">Services</a></li>
             <li><a href="#pricing" className="hover:text-blue-500">Pricing</a></li>
-            <li><a href="#reviews" className="hover:text-blue-500">Reviews</a></li>
             <li><a href="#faq" className="hover:text-blue-500">FAQs</a></li>
           </ul>
         </div>
