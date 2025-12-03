@@ -18,7 +18,7 @@ export default function Login() {
   const router = useRouter();
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  // ✅ Google login
+  // Google login
   useEffect(() => {
     const handleGoogleLogin = async (response) => {
       try {
@@ -68,7 +68,7 @@ export default function Login() {
     }
   }, [googleClientId, router]);
 
-  // ✅ Email + password login
+  // Email login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -99,7 +99,6 @@ export default function Login() {
         }
       }, 1500);
     } catch (err) {
-      console.error("Login error:", err);
       setError("Network error. Please try again.");
     } finally {
       setBusy(false);
@@ -107,8 +106,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-6">
-      <div className="flex flex-col md:flex-row w-full max-w-5xl h-auto md:h-[90vh] shadow-lg rounded-lg overflow-hidden">
+    <div className="min-h-screen w-full bg-white overflow-y-auto px-4 py-6">
+      <div className="flex flex-col md:flex-row w-full max-w-5xl mx-auto shadow-lg rounded-lg overflow-hidden bg-white">
+
         {/* Left Image */}
         <div className="w-full md:w-1/2 hidden md:block">
           <Image
@@ -122,8 +122,7 @@ export default function Login() {
         </div>
 
         {/* Right Form */}
-        <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-center">
-          {/* Logo & Header */}
+        <div className="w-full md:w-1/2 p-6 sm:p-8">
           <div className="mb-4 text-center md:text-left">
             <h1 className="text-2xl font-bold flex justify-center md:justify-start items-center gap-2">
               <span className="text-orange-500 text-3xl">T</span>
@@ -131,7 +130,7 @@ export default function Login() {
               <span className="text-green-500 text-3xl">s</span>
               <span className="text-pink-500 text-3xl">k</span>
               <span className="text-gray-900 ml-2">
-              Task<span className="font-bold">Uber</span>
+                Task<span className="font-bold">Uber</span>
               </span>
             </h1>
             <div className="mt-2 h-1 w-24 mx-auto md:mx-0 bg-gradient-to-r from-purple-400 to-purple-700"></div>
@@ -145,20 +144,19 @@ export default function Login() {
           </p>
 
           <form className="space-y-3" onSubmit={handleSubmit}>
-            {/* Email */}
+            
             <div>
               <label className="block text-sm font-medium mb-1">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
                 placeholder="Enter your email"
                 required
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-sm font-medium mb-1">Password</label>
               <div className="relative">
@@ -166,7 +164,7 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your password"
                   required
                 />
@@ -180,20 +178,15 @@ export default function Login() {
               </div>
             </div>
 
-            {/* Remember + Forgot */}
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Remember me
               </label>
-              <Link
-                href="/forgot-password"
-                className="text-purple-600 hover:underline"
-              >
+              <Link href="/forgot-password" className="text-purple-600 hover:underline">
                 Forgot Password?
               </Link>
             </div>
 
-            {/* Login Button */}
             <button
               type="submit"
               disabled={busy}
@@ -206,19 +199,15 @@ export default function Login() {
               {busy ? "Logging in..." : "Login"}
             </button>
 
-            {/* ✅ Error or success messages */}
             {error && (
               <div className="text-red-500 text-sm text-center">{error}</div>
             )}
             {success && (
-              <div className="text-green-600 text-sm text-center">
-                {success}
-              </div>
+              <div className="text-green-600 text-sm text-center">{success}</div>
             )}
 
             <div className="text-center text-sm text-gray-500">or</div>
 
-            {/* ✅ Google button */}
             <div id="googleLoginBtn" className="w-full flex justify-center mt-2"></div>
 
             <p className="text-center text-sm text-gray-500 mt-2">
@@ -227,6 +216,7 @@ export default function Login() {
                 Signup
               </Link>
             </p>
+
           </form>
         </div>
       </div>

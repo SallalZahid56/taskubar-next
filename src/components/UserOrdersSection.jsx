@@ -36,7 +36,7 @@ export default function UserOrdersSection() {
     <div className="bg-white p-6 rounded-lg shadow mt-6">
       <h2 className="text-xl font-bold mb-4">My Orders</h2>
 
-      {/* ✅ Responsive scroll wrapper */}
+      {/* Responsive scroll wrapper */}
       <div className="overflow-x-auto">
         <table className="min-w-full border rounded-lg text-sm md:text-base">
           <thead>
@@ -49,6 +49,7 @@ export default function UserOrdersSection() {
               <th className="p-2 border whitespace-nowrap">Status</th>
             </tr>
           </thead>
+
           <tbody>
             {orders.length > 0 ? (
               orders.map((order) => (
@@ -56,19 +57,30 @@ export default function UserOrdersSection() {
                   <td className="p-2 border whitespace-nowrap">{order.id}</td>
                   <td className="p-2 border">{order.service}</td>
 
-                  {/* Quotation */}
+                  {/* ⭐ Updated Quotation Cell */}
                   <td className="p-2 border whitespace-nowrap">
-                    {order.quotation ? (
+                    {order.discount ? (
+                      <>
+                        <span className="line-through text-gray-500 mr-2">
+                          {order.quotation}
+                        </span>
+                        <span className="text-green-600 font-bold">
+                          {order.discount}
+                        </span>
+                      </>
+                    ) : order.quotation ? (
                       <span className="text-purple-600">{order.quotation}</span>
                     ) : (
                       <span className="text-gray-400 italic">Pending</span>
                     )}
                   </td>
 
-                  {/* Voucher */}
+                  {/* ⭐ Updated Voucher Cell */}
                   <td className="p-2 border whitespace-nowrap">
-                    {order.voucher ? (
-                      <span className="text-green-600">{order.voucher}</span>
+                    {order.voucherCode ? (
+                      <span className="text-green-600 font-semibold">
+                        {order.voucherCode}
+                      </span>
                     ) : order.quotation ? (
                       <button
                         onClick={() => applyVoucher(order.id)}
@@ -81,11 +93,16 @@ export default function UserOrdersSection() {
                     )}
                   </td>
 
-                  {/* Invoice */}
+                  {/* ⭐ Updated Invoice Cell */}
                   <td className="p-2 border whitespace-nowrap">
                     {order.invoiceSent ? (
-                      <span className="text-green-700 font-semibold">Sent</span>
-                    ) : order.quotation && order.voucher ? ( // ✅ only show if voucher is applied
+                      <a
+                        href={`/api/orders/${order.id}/invoice`}
+                        className="text-green-700 font-semibold hover:underline"
+                      >
+                        Download
+                      </a>
+                    ) : order.discount ? (
                       <button
                         onClick={() => requestInvoice(order.id)}
                         className="text-purple-600 hover:underline"
@@ -93,7 +110,9 @@ export default function UserOrdersSection() {
                         Request Invoice
                       </button>
                     ) : (
-                      <span className="text-gray-400 italic">Apply voucher first</span> // guide user
+                      <span className="text-gray-400 italic">
+                        Apply voucher first
+                      </span>
                     )}
                   </td>
 

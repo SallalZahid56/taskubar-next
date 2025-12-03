@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +20,7 @@ const Signup = () => {
 
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  // ✅ Google signup setup
+  // Google signup
   useEffect(() => {
     const handleGoogleResponse = async (response) => {
       try {
@@ -37,13 +37,11 @@ const Signup = () => {
           return;
         }
 
-        console.log("✅ Google signup success:", data);
         setSuccess("Google signup successful! Redirecting...");
         setTimeout(() => {
           router.push("/user-dashboard");
         }, 1500);
       } catch (err) {
-        console.error("Google signup error:", err);
         setError("Network error. Please try again.");
       }
     };
@@ -67,7 +65,7 @@ const Signup = () => {
     }
   }, [googleClientId]);
 
-  // ✅ Validate input fields before sending
+  // Form validation
   const validateForm = () => {
     if (!name.trim()) return "Name is required";
     if (!email.trim()) return "Email is required";
@@ -78,18 +76,14 @@ const Signup = () => {
     return null;
   };
 
-  // ✅ Form submission
+  // Handle signup
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    // Frontend validation
     const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+    if (validationError) return setError(validationError);
 
     setBusy(true);
     try {
@@ -102,27 +96,23 @@ const Signup = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        // Handle backend errors
-        setError(data.error || "Signup failed. Please try again.");
+        setError(data.error || "Signup failed.");
         setBusy(false);
         return;
       }
 
-      // Success 🎉
       setSuccess("Signup successful! Redirecting...");
-      setTimeout(() => {
-        router.push("/user-dashboard");
-      }, 1500);
+      setTimeout(() => router.push("/user-dashboard"), 1500);
     } catch (err) {
-      console.error("Signup error:", err);
-      setError("Network error. Please try again later.");
+      setError("Network error. Try later.");
       setBusy(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-6">
-      <div className="flex flex-col md:flex-row w-full max-w-5xl h-auto md:h-[85vh] shadow-lg rounded-lg overflow-hidden">
+    <div className="min-h-screen w-full bg-white overflow-y-auto px-4 py-6">
+      <div className="flex flex-col md:flex-row w-full max-w-5xl mx-auto shadow-lg rounded-lg overflow-hidden bg-white">
+
         {/* Left Image */}
         <div className="w-full md:w-1/2 hidden md:block">
           <Image
@@ -136,7 +126,7 @@ const Signup = () => {
         </div>
 
         {/* Right Form */}
-        <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-6 sm:p-8">
           {/* Logo */}
           <div className="mb-4 text-center md:text-left">
             <h1 className="text-2xl font-bold flex justify-center md:justify-start items-center gap-2">
@@ -169,16 +159,18 @@ const Signup = () => {
               type="text"
               placeholder="Full Name"
               required
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
             />
+
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email"
               required
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
             />
+
             <div className="relative">
               <input
                 value={password}
@@ -186,7 +178,7 @@ const Signup = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 required
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
               />
               <button
                 type="button"
@@ -197,39 +189,33 @@ const Signup = () => {
               </button>
             </div>
 
-            {/* ✅ Optional referral code field */}
             <input
               value={referralCode}
               onChange={(e) => setReferralCode(e.target.value)}
               type="text"
               placeholder="Referral Code (optional)"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
             />
 
             <button
               disabled={busy}
               type="submit"
-              className={`w-full py-2 rounded-lg font-semibold transition ${busy
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:opacity-90"
-                }`}
+              className={`w-full py-2 rounded-lg font-semibold transition ${
+                busy
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:opacity-90"
+              }`}
             >
               {busy ? "Signing up..." : "Signup"}
             </button>
 
-            {/* ✅ Error or success messages */}
-            {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
-            )}
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
             {success && (
-              <div className="text-green-600 text-sm text-center">
-                {success}
-              </div>
+              <p className="text-green-600 text-sm text-center">{success}</p>
             )}
 
             <div className="text-center text-sm text-gray-500">or</div>
 
-            {/* Google signup */}
             <div id="googleSignUpBtn" className="flex justify-center mt-2"></div>
 
             <p className="text-center text-sm text-gray-500 mt-2">
